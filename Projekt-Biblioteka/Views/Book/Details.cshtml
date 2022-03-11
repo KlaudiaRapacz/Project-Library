@@ -1,0 +1,83 @@
+﻿@model Book
+
+@{
+    ViewData["Title"] = "Movie details";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header">
+
+                            <p class="card-text">
+                                <h1 class="card-title">
+                                    @Model.Title
+                                </h1>
+                            </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@Model.ImageURL" width="100%" alt="@Model.Title">
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>Autor: </b>
+                            @foreach (var author in @Model.Authors_Books)
+                            {
+                                <a asp-controller="Author" asp-action="Details" asp-route-id="@author.AuthorId">
+                                    @author.Author.FullName
+                                </a>
+                            }
+                        </p>
+                        <p class="card-text">
+                            <b>Wydawca: </b>
+                            <a asp-controller="Publisher" asp-action="Details" asp-route-id="@Model.PublisherId">
+                                @Model.Publisher.Name
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <b>Gatunek: </b>
+                            <a asp-controller="Category" asp-action="Details" asp-route-id="@Model.CategoryId">
+                                @Model.Categories.Name
+                                </a>
+                        </p>
+                        <p class="card-text"><b>Rok wydania: </b>@Model.RelaseDate.ToString("yyyy")</p>
+                        <p class="card-text"><b>ISBN: </b>@Model.ISBN</p>
+                        <p class="card-text">
+                            @if (!@Model.IsBorrowed != true)
+                            {
+                                <span class="badge btn-lg bg-danger text-white">WYPOŻYCZONA</span>
+
+                            }
+                            else
+                            {
+                                <span class="badge btn-lg bg-success text-white">DOSTĘPNA</span>
+                            }
+                        </p>
+                        <p class="card-text">@Model.Description</p>
+                    </div>
+                </div>           
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary" asp-action="Index">
+                                Wróć
+                            </a>
+                            @if (Model.IsBorrowed != false)
+                            {
+                                <button type"button" class="btn btn-danger text-white float-right" disabled>Wypożyczone</button>
+                            }
+                            else
+                            {
+                            <a class="btn btn-success text-white float-right" asp-controller="Order" asp-action="AddItemToBookCart" asp-route-id="@Model.Id"><i class="bi bi-book"></i> Wypożycz</a>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

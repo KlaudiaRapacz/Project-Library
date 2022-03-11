@@ -1,0 +1,57 @@
+﻿@using Projekt_Biblioteka.Data.ViewModels;
+@model BookCartVM
+
+@{
+    ViewData["Title"] = "Podsumowanie";
+}
+@{ var i = 0;}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="text-center">
+            <h2>Podsumowanie</h2>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center">Książka</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.bookCart.BookCartItems)
+                {  
+                <tr>
+                    <td class="align-middle text-right"  width="20%">@{i++;} @i</td>
+                    <td class="align-middle">
+                        <ul style="list-style-type:none">
+                                <li>
+                                    <div class="alert alert-secondary text-center" role="alert">
+                                        <span><b>@item.Book.Title</b></span>
+                                    </div>
+                                </li>
+                        </ul>
+                    </td>
+                    <td class="align-middle" width="20%">
+                        <a class="text-danger" asp-controller="Order" asp-action="RemoveItemFromBookCart"
+                           asp-route-id="@item.Book.Id">
+                            <i class="bi bi-dash-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-center">
+            <div class="btn-group">
+                <a class="btn btn-outline-success" asp-controller="Book" asp-action="Index">
+                    Dodaj więcej
+                </a>
+                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                    Zamów
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

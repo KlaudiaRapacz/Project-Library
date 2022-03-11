@@ -1,0 +1,53 @@
+﻿@model List<Order>
+
+@{
+    ViewData["Title"] = "Zamówienia";
+}
+
+<div class="row">
+    <div class="col-md-5 offset-md-3">
+        <p>
+            <h1 class="text-center">Lista Zamówień</h1>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Numer zamówiena</th>
+                    <th class="text-center">Książka</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>Czytelnik</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@order.Id</td>
+                        <td class="align-middle">
+
+                            <ul style="list-style-type:none">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li>
+                                        <div class="alert alert-secondary text-center" role="alert">
+                                            <span>@item.Book.Title</span>
+
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle">@order.User.Email  </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

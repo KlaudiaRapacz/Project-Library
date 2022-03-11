@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Book>
+
+@{
+    ViewData["Title"] = "List of Movies";
+}
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="card mb-3" style="width: 100%;">
+            <div class="row no-gutters">
+                <div class="col-3 col-md-2 col-xl-1">
+                    <img src="@item.ImageURL" height="100%" width="100%" alt="@item.Title">
+                </div>
+                <div class="col-9 col-md-10 col-xl-11">
+                    <div class="card-body">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a class="float-right mx-2" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            <a class="float-right" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                        }
+                            <h1 class="card-text">@item.Title</h1>
+                            @if (item.IsBorrowed != false)
+                            {
+                                <span class="badge btn-lg bg-danger text-white">WYPOŻYCZONA</span>
+
+                            }
+                            else
+                            {
+                                <span class="badge btn-lg bg-success text-white">DOSTĘPNA</span>
+                            }
+                            <p class="card-text">
+                                <b>Autor: </b>
+                                @foreach (var author in item.Authors_Books)
+                                {
+                                    <a asp-controller="Author" asp-action="Details" asp-route-id="@author.AuthorId">
+                                        @author.Author.FullName
+                                    </a>
+                                }
+                            </p>
+                            <p class="card-text">
+                                <b>Wydawca: </b>
+                                <a asp-controller="Publisher" asp-action="Details" asp-route-id="@item.Publisher.Id">@item.Publisher.Name </a>
+                            </p>
+                            <p class="card-text">
+                                <b>Gatuenk: </b>
+                                <a asp-controller="Category" asp-action="Details" asp-route-id="@item.Categories.Id">@item.Categories.Name </a>
+                            </p>
+                        </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card-footer ">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="bi bi-eye-fill"></i> Więcej
+                            </a>
+                            @if (item.IsBorrowed != false)
+                            {
+                                <button type"button" class="btn btn-danger text-white float-right" disabled>Wypożyczone</button>
+                            }
+                            else
+                            {
+                                <a class="btn btn-success text-white float-right" asp-controller="Order" asp-action="AddItemToBookCart" asp-route-id="@item.Id"><i class="bi bi-book"></i> Wypożycz</a>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,60 @@
+﻿@model Author
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header">
+                        <p class="card-text">
+                            <h1 class="card-title">
+                                @Model.FullName
+                            </h1>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <img src="@Model.ImageURL" width="100%" alt="@Model.FullName">
+                </div>
+                <div class="col-md-10">
+                    <div class="card-body">
+                        <p class="card-text">@Model.Bio</p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h2 class="card-text text-center"> Wypożycz inne książki @Model.FullName:</h2>
+                    <div class="row m-2">
+                        @foreach (var book in Model.Authors_Books)
+                        {
+                            <div class="col-12 col-sm-6 col-xl-4 mb-2">
+                                <div class="card h-100" style="width: 250px;">
+                                    <div class="card-body text-center">
+                                        <img src="@book.Book.ImageURL" width="100%" alt="@book.Book.Title">
+                                        <br />
+                                        <br />
+                                        <h5 class="card-text"><b>@book.Book.Title</b></h5>
+                                        @foreach (var author in book.Book.Authors_Books)
+                                        {
+                                            <h6 class="card-text"><b>@author.Author.FullName</b></h6>
+                                        }
+                                        <a class="btn btn-outline-primary" asp-controller="Book" asp-action="Details" asp-route-id="@book.Book.Id">
+                                            Więcej
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a>
+                            <a class="btn btn-outline-secondary" asp-controller="Book" asp-action="Index">Wróć</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
